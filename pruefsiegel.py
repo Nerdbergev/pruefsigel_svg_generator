@@ -1,9 +1,15 @@
 #!/usr/bin/python
 import argparse
-import svgwrite
-from pathlib import Path
 import math
+from pathlib import Path
 
+import svgwrite
+
+# LICENSE
+#
+# Written 2022 by Christian Vogel <vogelchr@vogel.cx>.
+# To the extent possible under law, I, the author, waive all copyright and related or
+# neighboring rights to this program. This work is publiched from Germany.
 
 def add_vect(*vects):
     return tuple(map(sum, zip(*vects)))
