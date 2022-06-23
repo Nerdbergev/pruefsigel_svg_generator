@@ -12,10 +12,6 @@ import svgwrite
 # To the extent possible under law, I, the author, waive all copyright and related or
 # neighboring rights to this program. This work is publiched from Germany.
 
-def add_vect(*vects):
-    return tuple(map(sum, zip(*vects)))
-
-
 def mult_vect(factor, vect):
     return tuple([factor * v for v in vect])
 
