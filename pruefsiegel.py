@@ -129,14 +129,10 @@ for spoke in range(n_spokes):
         if angle_letters > 360.0:
             angle_letters -= 360.0
 
-    grp = svgwrite.container.Group()
-    grp.add(
-        dwg.text(txt, style=style, text_anchor='middle', fill=fill)
-    )
-    grp.translate(xy_angle_r(None, angle_text, r))
-    grp.rotate(angle_letters)
-
-    dwg.add(grp)
+    t = dwg.text(txt, style=style, text_anchor='middle', fill=fill)
+    t.translate(xy_angle_r(None, angle_text, r))
+    t.rotate(angle_letters)
+    dwg.add(t)
 
 if args.center_text:
     dwg.add(dwg.text(args.center_text, style='font-size:5px; font-family:sans-serif; font-weight:bold',
