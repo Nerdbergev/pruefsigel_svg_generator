@@ -20,11 +20,9 @@ def mult_vect(factor, vect):
     return tuple([factor * v for v in vect])
 
 
-def xy_angle_r(center, angle, r):
+def xy_angle_r(angle, r):
     xy_norm = (math.sin(angle * math.pi / 180), -math.cos(angle * math.pi / 180))
     v = mult_vect(r, xy_norm)
-    if center:
-        v = add_vect(center, v)
     return v
 
 
@@ -61,10 +59,10 @@ n_spokes = 18
 # if the year is inverse, draw the black arc below, over which the
 # year letters will be placed
 if args.year_inverse:
-    a = xy_angle_r(None, 360.0 * 6 / 18, args.inner_radius)
-    b = xy_angle_r(None, 360.0 * 6 / 18, args.outer_radius)
-    c = xy_angle_r(None, 360.0 * 12 / 18, args.outer_radius)
-    d = xy_angle_r(None, 360.0 * 12 / 18, args.inner_radius)
+    a = xy_angle_r(360.0 * 6 / 18, args.inner_radius)
+    b = xy_angle_r(360.0 * 6 / 18, args.outer_radius)
+    c = xy_angle_r(360.0 * 12 / 18, args.outer_radius)
+    d = xy_angle_r(360.0 * 12 / 18, args.inner_radius)
 
     path = svgwrite.path.Path()
     path.push('M', (a[0], a[1]))
@@ -94,8 +92,8 @@ for spoke in range(n_spokes):
 
     if attrs:
         dwg.add(
-            dwg.line(start=xy_angle_r(None, angle_line, args.inner_radius),
-                     end=xy_angle_r(None, angle_line, args.outer_radius),
+            dwg.line(start=xy_angle_r(angle_line, args.inner_radius),
+                     end=xy_angle_r(angle_line, args.outer_radius),
                      **attrs)
         )
 
@@ -130,7 +128,7 @@ for spoke in range(n_spokes):
             angle_letters -= 360.0
 
     t = dwg.text(txt, style=style, text_anchor='middle', fill=fill)
-    t.translate(xy_angle_r(None, angle_text, r))
+    t.translate(xy_angle_r(angle_text, r))
     t.rotate(angle_letters)
     dwg.add(t)
 
