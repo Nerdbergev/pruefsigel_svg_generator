@@ -5,6 +5,7 @@ from pathlib import Path
 
 import svgwrite
 
+
 # LICENSE
 #
 # Written 2022 by Christian Vogel <vogelchr@vogel.cx>.
@@ -50,12 +51,15 @@ dwg.viewbox(-whalf, -whalf, w, w)
 
 lineattrs = {'fill': 'none', 'stroke': 'rgb(0,0,0)', 'stroke_width': 0.15}
 
+# draw outer circle
 dwg.add(
     dwg.circle(center=(0.0, 0.0), r=args.outer_radius, **lineattrs)
 )
 
 n_spokes = 18
 
+# if the year is inverse, draw the black arc below, over which the
+# year letters will be placed
 if args.year_inverse:
     a = xy_angle_r(None, 360.0 * 6 / 18, args.inner_radius)
     b = xy_angle_r(None, 360.0 * 6 / 18, args.outer_radius)
@@ -75,12 +79,24 @@ for spoke in range(n_spokes):
     angle_line = 360.0 * spoke / n_spokes
     angle_text = 360.0 * (2 * spoke + 1) / (2 * n_spokes)
 
-    # if the year is inverted, then we skip the spokes around the years!
-    if spoke <= 5 or spoke >= 13 or not args.year_inverse:
+    # if the year is inverted, then
+    #    we skip the spokes around the years (6..12)
+    #    we invert the spokes between the years (7..11)
+    attrs = lineattrs.copy()
+    if args.year_inverse:
+        # skip the spokes between years/months
+        if spoke == 6 or spoke == 12:
+            attrs = None  # skip
+        elif spoke > 6 and spoke < 12:
+            attrs['stroke'] = 'rgb(255,255,255)'
+        else:
+            attrs['stroke'] = 'rgb(0,0,0)'
+
+    if attrs:
         dwg.add(
             dwg.line(start=xy_angle_r(None, angle_line, args.inner_radius),
                      end=xy_angle_r(None, angle_line, args.outer_radius),
-                     **lineattrs)
+                     **attrs)
         )
 
     # Months
